@@ -1,6 +1,6 @@
 Installation
 ============
-The minimal working python version is 3.5.x
+The minimal working python version is 3.12.x
 
 beem can be installed parallel to python-steem.
 
