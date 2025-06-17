@@ -30,9 +30,9 @@ case "${TOXENV}" in
 		pyenv install 3.5.3
 		pyenv global 3.5.3
 		;;
-	py36)
-		pyenv install 3.6.1
-		pyenv global 3.6.1
+	py312)
+		pyenv install 3.12.0
+		pyenv global 3.12.0
 		;;
 	pypy*)
 		pyenv install "$PYPY_VERSION"
