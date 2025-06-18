@@ -18,13 +18,13 @@ You can change the password via `changewalletpassphrase` command.
 
 
 From this point on, every time an action requires your private keys, you will be prompted ot enter
-this password (from CLI as well as while using `steem` library).
+this password (from CLI as well as while using ``beem`` library).
 
 To bypass password entry, you can set an environment variable ``UNLOCK``.
 
 ::
 
-    UNLOCK=mysecretpassword beempy transfer <recipient_name> 100 STEEM
+    UNLOCK=mysecretpassword beempy transfer <recipient_name> 100 HIVE
 
 Using a key json file
 ---------------------
@@ -82,13 +82,13 @@ Upvoting a post:
 
 ::
 
-   beempy upvote --account <account_name> https://steemit.com/funny/@mynameisbrian/the-content-stand-a-comic
+   beempy upvote --account <account_name> https://peakd.com/hive/@mynameisbrian/the-content-stand-a-comic
 
 
 Setting Defaults
 ----------------
 For a more convenient use of ``beempy`` as well as the ``beem`` library, you can set some defaults.
-This is especially useful if you have a single Steem account.
+This is especially useful if you have a single Hive account.
 
 ::
 
@@ -107,7 +107,7 @@ If you've set up your `default_account`, you can now send funds by omitting this
 
 ::
 
-    beempy transfer <recipient_name> 100 STEEM memo
+    beempy transfer <recipient_name> 100 HIVE memo
 
 Commands
 --------
@@ -126,15 +126,14 @@ You can see all available commands with ``beempy --help``
    Usage: beempy [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 
    Options:
-     -n, --node TEXT        URL for public Steem API (e.g.
-                            https://api.steemit.com)
+     -n, --node TEXT        URL for public Hive API (e.g.
+                            https://api.hive.blog)
      -o, --offline          Prevent connecting to network
      -d, --no-broadcast     Do not broadcast
      -p, --no-wallet        Do not load the wallet
      -x, --unsigned         Nothing will be signed
      -l, --create-link      Creates hivesigner links from all broadcast
                             operations
-     -s, --steem            Connect to the Steem blockchain
      -h, --hive             Connect to the Hive blockchain
      -k, --keys TEXT        JSON file that contains account keys, when set, the
                             wallet cannot be used.

@@ -8,8 +8,8 @@ from beem.memo import Memo
 import random
 import shutil, tempfile
 import os
-from beem.instance import set_shared_steem_instance
-from .nodes import get_hive_nodes, get_steem_nodes
+from beem.instance import set_shared_hive_instance
+from .nodes import get_hive_nodes
 
 wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 core_unit = "STM"
@@ -25,7 +25,7 @@ class Testcases(unittest.TestCase):
             keys=[wif],
             num_retries=10
         )
-        set_shared_steem_instance(cls.bts)
+        set_shared_hive_instance(cls.bts)
 
     def test_decryt_encrypt(self):
         memo = Memo(from_account=wif, to_account="beembot")

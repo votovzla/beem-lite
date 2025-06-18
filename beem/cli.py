@@ -19,9 +19,7 @@ from beem.instance import set_shared_blockchain_instance, shared_blockchain_inst
 from beem.amount import Amount
 from beem.price import Price
 from beem.account import Account
-from beem.steem import Steem
 from beem.hive import Hive
-from beem.blurt import Blurt
 from beem.comment import Comment
 from beem.message import Message
 from beem.market import Market
@@ -230,8 +228,6 @@ def export_trx(tx, export):
 @click.option(
     '--create-link', '-l', is_flag=True, default=False, help="Creates hivesigner links from all broadcast operations")
 @click.option(
-    '--steem', '-s', is_flag=True, default=False, help="Connect to the Steem blockchain")
-@click.option(
     '--hive', '-h', is_flag=True, default=False, help="Connect to the Hive blockchain")
 @click.option(
     '--keys', '-k', help="JSON file that contains account keys, when set, the wallet cannot be used.")
@@ -247,7 +243,7 @@ def export_trx(tx, export):
 @click.option(
     '--verbose', '-v', default=3, help='Verbosity')
 @click.version_option(version=__version__)
-def cli(node, offline, no_broadcast, no_wallet, unsigned, create_link, steem, hive, keys, use_ledger, path, token, expires, verbose):
+def cli(node, offline, no_broadcast, no_wallet, unsigned, create_link, hive, keys, use_ledger, path, token, expires, verbose):
 
     # Logging
     log = logging.getLogger(__name__)
@@ -289,15 +285,9 @@ def cli(node, offline, no_broadcast, no_wallet, unsigned, create_link, steem, hi
     else:
         sc2 = None
     debug = verbose > 0
-    blurt = False
-    if not hive and not steem:
+    if not hive:
         config = get_default_config_store()
-        if config["default_chain"].lower() == "hive":
-            hive = True
-        elif config["default_chain"].lower() == "steem":
-            steem = True
-        elif config["default_chain"].lower() == "blurt":
-            blurt = True
+        hive = config["default_chain"].lower() == "hive"
     if hive:
         stm = Hive(
             node=node,
@@ -317,36 +307,17 @@ def cli(node, offline, no_broadcast, no_wallet, unsigned, create_link, steem, hi
             timeout=30,
             autoconnect=autoconnect
         )
-    elif steem:
-        stm = Steem(
-            node=node,
-            nobroadcast=no_broadcast,
-            offline=offline,
-            keys=keys_list,
-            nowallet=no_wallet,
-            unsigned=unsigned,
-            use_sc2=token,
-            expiration=expires,
-            steemconnect=sc2,
-            use_ledger=use_ledger,
-            path=path,
-            debug=debug,
-            num_retries=10,
-            num_retries_call=5,
-            timeout=30,
-            autoconnect=autoconnect
-        )
     else:
-        stm = Blurt(
+        stm = Hive(
             node=node,
             nobroadcast=no_broadcast,
-            offline=offline,
             keys=keys_list,
+            offline=offline,
             nowallet=no_wallet,
             unsigned=unsigned,
-            use_sc2=token,
+            use_hs=token,
             expiration=expires,
-            steemconnect=sc2,
+            hivesigner=sc2,
             use_ledger=use_ledger,
             path=path,
             debug=debug,
@@ -541,7 +512,7 @@ def currentnode(version, url):
         t.add_row(["Version", stm.get_blockchain_version()])
         t.add_row(["Chain", stm.get_blockchain_name()])
     else:
-        t.add_row(["Version", "steempy is in offline mode..."])
+        t.add_row(["Version", "beempy is in offline mode..."])
     print(t)
 
 
@@ -553,12 +524,6 @@ def currentnode(version, url):
     '--hive', '-h', is_flag=True, default=False,
     help="Switch to HIVE blockchain, when set to true.")
 @click.option(
-    '--steem', '-e', is_flag=True, default=False,
-    help="Switch to STEEM nodes, when set to true.")
-@click.option(
-    '--blurt', '-b', is_flag=True, default=False,
-    help="Switch to BLURT nodes, when set to true.")
-@click.option(
     '--test', '-t', is_flag=True, default=False,
     help="Do change the node list, only print the newest nodes setup.")
 @click.option(
@@ -567,45 +532,20 @@ def currentnode(version, url):
 @click.option(
     '--only-wss', is_flag=True, default=False,
     help="Use only websocket nodes.")
-def updatenodes(show, hive, steem, blurt, test, only_https, only_wss):
+def updatenodes(show, hive, test, only_https, only_wss):
     """ Update the nodelist from @fullnodeupdate
     """
     stm = shared_blockchain_instance()
     if stm.rpc is not None:
         stm.rpc.rpcconnect()
-    if steem and hive:
-        print("hive and steem cannot be active both")
-        return
     t = PrettyTable(["node", "Version", "score"])
     t.align = "l"
-    if steem:
-        blockchain = "steem"
-    elif hive:
-        blockchain = "hive"
-    elif blurt:
-        blockchain = "blurt"
-    else:
-        blockchain = stm.config["default_chain"]
+    blockchain = "hive"
     nodelist = NodeList()
     nodelist.update_nodes(blockchain_instance=stm)
-    if hive:
-        nodes = nodelist.get_hive_nodes(wss=not only_https, https=not only_wss)
-        if stm.config["default_chain"] != "hive":
-            stm.config["default_chain"] = "hive"
-    elif steem:
-        nodes = nodelist.get_steem_nodes(wss=not only_https, https=not only_wss)
-        if stm.config["default_chain"] != "steem":
-            stm.config["default_chain"] = "steem"
-    elif blurt:
-        nodes = ["https://rpc.blurt.world", "https://blurt-rpc.steem.buzz"]
-        if stm.config["default_chain"] != "blurt":
-            stm.config["default_chain"] = "blurt"
-    elif stm.config["default_chain"] == "steem":
-        nodes = nodelist.get_steem_nodes(wss=not only_https, https=not only_wss)
-    elif stm.config["default_chain"] == "blurt":
-        nodes = ["https://rpc.blurt.world", "https://blurt-rpc.steem.buzz"]
-    else:
-        nodes = nodelist.get_hive_nodes(wss=not only_https, https=not only_wss)
+    nodes = nodelist.get_hive_nodes(wss=not only_https, https=not only_wss)
+    if stm.config["default_chain"] != "hive":
+        stm.config["default_chain"] = "hive"
     if show or test:
         sorted_nodes = sorted(nodelist, key=lambda node: node["score"], reverse=True)
         for node in sorted_nodes:
@@ -804,7 +744,7 @@ def delkey(confirm, pub):
 @click.option('--strength', help='Defines word list length for BIP39 (default = 256).', default=256)
 @click.option('--passphrase', '-p', help='Sets a BIP39 passphrase', is_flag=True, default=False)
 @click.option('--path', '-m', help='Sets a path for BIP39 key creations. When path is set, network, role, account_keys, account and sequence is not used')
-@click.option('--network', '-n', help='Network index, when using BIP39, 0 for steem and 13 for hive, (default is 13)', default=13)
+@click.option('--network', '-n', help='Network index when using BIP39 (default is 13 for Hive)', default=13)
 @click.option('--role', '-r', help='Defines which key role should be created (default = owner).', default="owner")
 @click.option('--account-keys', '-k', help='Derives four BIP39 keys for each role', is_flag=True, default=False)
 @click.option('--sequence', '-s', help='Sequence key number, when using BIP39 (default is 0)', default=0)

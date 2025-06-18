@@ -5,26 +5,24 @@ from datetime import datetime, timedelta
 import pytz
 import time
 from pprint import pprint
-from beem import Steem
+from beem import Hive
 from beem.blockchain import Blockchain
 from beem.block import Block
-from beem.instance import set_shared_steem_instance
-from .nodes import get_hive_nodes, get_steem_nodes
+from beem.instance import set_shared_hive_instance
+from .nodes import get_hive_nodes
 
 
 
 class Testcases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.bts = Steem(
+        cls.bts = Hive(
             node=get_hive_nodes(),
             nobroadcast=True,
             timeout=30,
             num_retries=30,
         )
-        # from getpass import getpass
-        # self.bts.wallet.unlock(getpass())
-        set_shared_steem_instance(cls.bts)
+        set_shared_hive_instance(cls.bts)
         cls.bts.set_default_account("test")
 
         b = Blockchain(steem_instance=cls.bts)

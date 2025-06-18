@@ -2,7 +2,7 @@ Installation
 ============
 The minimal working python version is 3.12.x
 
-beem can be installed parallel to python-steem.
+beem is installed like any other Python package.
 
 For Debian and Ubuntu, please ensure that the following packages are installed:
         

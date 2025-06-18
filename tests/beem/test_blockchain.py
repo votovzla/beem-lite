@@ -5,13 +5,13 @@ from datetime import datetime, timedelta
 import pytz
 import time
 from pprint import pprint
-from beem import Steem
+from beem import Hive
 from beem.blockchain import Blockchain
 from beem.exceptions import BlockWaitTimeExceeded
 from beem.block import Block
 from beem.instance import set_shared_blockchain_instance
 from beembase.signedtransactions import Signed_Transaction
-from .nodes import get_hive_nodes, get_steem_nodes
+from .nodes import get_hive_nodes
 
 wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 
@@ -19,7 +19,7 @@ wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 class Testcases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.bts = Steem(
+        cls.bts = Hive(
             node=get_hive_nodes(),
             nobroadcast=True,
             keys={"active": wif},

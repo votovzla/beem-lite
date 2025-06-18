@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from beem.nodelist import NodeList
-from beem import Steem, Hive
+from beem import Hive
 
 
 def get_hive_nodes():
@@ -10,10 +10,3 @@ def get_hive_nodes():
     return nodelist.get_hive_nodes()
     #return "https://beta.openhive.network"
 
-
-def get_steem_nodes():
-    return "https://api.steemit.com"
-
-
-def get_blurt_nodes():
-    return "https://rpc.blurt.world"

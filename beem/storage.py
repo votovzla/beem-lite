@@ -17,8 +17,6 @@ def generate_config_store(config, blockchain="hive"):
     nodelist = NodeList()
     if blockchain == "hive":
         nodes = nodelist.get_hive_nodes(testnet=False)
-    elif blockchain == "steem":
-        nodes = nodelist.get_steem_nodes(testnet=False)
     else:
         nodes = []
     

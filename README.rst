@@ -1,8 +1,8 @@
-beem - Unofficial Python Library for HIVE and STEEM
-===================================================
+beem - Unofficial Python Library for Hive
+========================================
 
-beem is an unofficial python library for steem and HIVE, which is created new from scratch from `python-bitshares`_
-The library name is derived from a beam machine, similar to the analogy between steem and steam. beem includes `python-graphenelib`_.
+beem is an unofficial python library for the Hive blockchain, created from scratch from `python-bitshares`_.
+The library name is derived from a beam machine. beem includes `python-graphenelib`_.
 
 .. image:: https://img.shields.io/pypi/v/beem.svg
     :target: https://pypi.python.org/pypi/beem/
@@ -79,7 +79,7 @@ Installation
 ============
 The minimal working python version is 3.12.x
 
-beem can be installed parallel to python-steem.
+beem installs like any other Python package.
 
 For Debian and Ubuntu, please ensure that the following packages are installed:
 

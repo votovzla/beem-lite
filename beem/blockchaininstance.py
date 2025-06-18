@@ -802,8 +802,6 @@ class BlockChainInstance(object):
             nodelist.update_nodes()
         if blockchain == "hive":
             self.set_default_nodes(nodelist.get_hive_nodes())
-        else:
-            self.set_default_nodes(nodelist.get_steem_nodes())
         self.config["default_chain"] = blockchain
         if not self.offline:
             self.connect(node="")
