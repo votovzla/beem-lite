@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
-from beem import Steem
-from beem.instance import set_shared_steem_instance
+from beem import Hive
+from beem.instance import set_shared_hive_instance
 from beem.amount import Amount
 from beem.price import Price, Order, FilledOrder
 from beem.asset import Asset
 import unittest
-from .nodes import get_hive_nodes, get_steem_nodes
+from .nodes import get_hive_nodes
 
 
 class Testcases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        steem = Steem(
+        steem = Hive(
             node=get_hive_nodes(),
             nobroadcast=True,
             num_retries=10
         )
-        set_shared_steem_instance(steem)
+        set_shared_hive_instance(steem)
 
     def test_init(self):
         # self.assertEqual(1, 1)

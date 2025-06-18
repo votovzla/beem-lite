@@ -8,7 +8,7 @@ from beem.vote import Vote
 from beem.account import Account
 from beem.instance import set_shared_blockchain_instance
 from beem.utils import resolve_authorperm
-from .nodes import get_hive_nodes, get_steem_nodes
+from .nodes import get_hive_nodes
 
 wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 

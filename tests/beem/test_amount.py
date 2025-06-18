@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 import unittest
 from parameterized import parameterized
-from beem import Steem
+from beem import Hive
 from beem.amount import Amount
 from beem.asset import Asset
 from beem.instance import set_shared_blockchain_instance, SharedInstance
 from decimal import Decimal
-from .nodes import get_hive_nodes, get_steem_nodes
+from .nodes import get_hive_nodes
 
 
 class Testcases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.bts = Steem(
+        cls.bts = Hive(
             node=get_hive_nodes(),
             nobroadcast=True,
             num_retries=10

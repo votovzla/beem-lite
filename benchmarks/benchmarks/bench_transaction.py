@@ -33,7 +33,7 @@ class Benchmark(object):
 
 class Transaction(Benchmark):
     def setup(self):
-        self.prefix = u"STEEM"
+        self.prefix = u"HIVE"
         self.default_prefix = u"STM"
         self.wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
         self.ref_block_num = 34294
@@ -61,7 +61,7 @@ class Transaction(Benchmark):
         self.op = operations.Transfer(**{
             "from": "foo",
             "to": "baar",
-            "amount": Amount("111.110 STEEM", steem_instance=self.stm),
+            "amount": Amount("111.110 HIVE", hive_instance=self.stm),
             "memo": "Fooo",
             "prefix": self.default_prefix
         })
@@ -73,7 +73,7 @@ class Transaction(Benchmark):
                 'creator':
                 'xeroc',
                 'fee':
-                '10.000 STEEM',
+                '10.000 HIVE',
                 'json_metadata':
                 '',
                 'memo_key':
@@ -128,7 +128,7 @@ class Transaction(Benchmark):
         self.op = operations.Transfer_to_vesting(**{
             "from": "foo",
             "to": "baar",
-            "amount": "111.110 STEEM",
+            "amount": "111.110 HIVE",
             "prefix": self.default_prefix
         })
 
@@ -177,7 +177,7 @@ class Transaction(Benchmark):
             **{
                 "from": "testuser",
                 "to": "testuser",
-                "amount": "1.000 STEEM",
+                "amount": "1.000 HIVE",
                 "memo": "testmemo",
                 "prefix": self.default_prefix
             })
@@ -212,8 +212,8 @@ class Transaction(Benchmark):
             **{
                 "owner": "",
                 "orderid": 0,
-                "amount_to_sell": "0.000 STEEM",
-                "min_to_receive": "0.000 STEEM",
+                "amount_to_sell": "0.000 HIVE",
+                "min_to_receive": "0.000 HIVE",
                 "fill_or_kill": False,
                 "expiration": "2016-12-31T23:59:59",
                 "prefix": self.default_prefix
@@ -323,7 +323,7 @@ class Transaction(Benchmark):
                 "publisher": "xeroc",
                 "exchange_rate": {
                     "base": "1.000 SBD",
-                    "quote": "4.123 STEEM"
+                    "quote": "4.123 HIVE"
                 },
                 "prefix": self.default_prefix
             })
@@ -350,12 +350,12 @@ class Transaction(Benchmark):
                 "block_signing_key":
                 "STM6zLNtyFVToBsBZDsgMhgjpwysYVbsQD6YhP3kRkQhANUB4w7Qp",
                 "props": {
-                    "account_creation_fee": "10.000 STEEM",
+                    "account_creation_fee": "10.000 HIVE",
                     "maximum_block_size": 1111111,
                     "sbd_interest_rate": 1000
                 },
                 "fee":
-                "10.000 STEEM",
+                "10.000 HIVE",
                 "prefix": self.default_prefix
             })
 

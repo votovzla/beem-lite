@@ -1,54 +1,39 @@
 # -*- coding: utf-8 -*-
 import unittest
 from parameterized import parameterized
-from beem import Steem
+from beem import Hive
 from beem.asset import Asset
-from beem.instance import set_shared_steem_instance
+from beem.instance import set_shared_hive_instance
 from beem.exceptions import AssetDoesNotExistsException
-from .nodes import get_hive_nodes, get_steem_nodes
+from .nodes import get_hive_nodes
 
 
 
 class Testcases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.bts = Steem(
+        cls.bts = Hive(
             node=get_hive_nodes(),
             nobroadcast=True,
             num_retries=10
         )
-        cls.steemit = Steem(
-            node="https://api.steemit.com",
-            nobroadcast=True,
-            num_retries=10
-        )
-        set_shared_steem_instance(cls.bts)
+        set_shared_hive_instance(cls.bts)
 
-    @parameterized.expand([
-        ("normal"),
-        ("steemit"),
-    ])
-    def test_assert(self, node_param):
-        if node_param == "normal":
-            stm = self.bts
-        else:
-            stm = self.steemit
+    def test_assert(self):
+        stm = self.bts
         with self.assertRaises(AssetDoesNotExistsException):
             Asset("FOObarNonExisting", full=False, steem_instance=stm)
 
     @parameterized.expand([
-        ("normal", "HBD", "HBD", 3, "@@000000013"),
-        ("normal", "HIVE", "HIVE", 3, "@@000000021"),
-        ("normal", "VESTS", "VESTS", 6, "@@000000037"),
-        ("normal", "@@000000013", "HBD", 3, "@@000000013"),
-        ("normal", "@@000000021", "HIVE", 3, "@@000000021"),
-        ("normal", "@@000000037", "VESTS", 6, "@@000000037"),
+        ("HBD", "HBD", 3, "@@000000013"),
+        ("HIVE", "HIVE", 3, "@@000000021"),
+        ("VESTS", "VESTS", 6, "@@000000037"),
+        ("@@000000013", "HBD", 3, "@@000000013"),
+        ("@@000000021", "HIVE", 3, "@@000000021"),
+        ("@@000000037", "VESTS", 6, "@@000000037"),
     ])
-    def test_properties(self, node_param, data, symbol_str, precision, asset_str):
-        if node_param == "normal":
-            stm = self.bts
-        else:
-            stm = self.testnet
+    def test_properties(self, data, symbol_str, precision, asset_str):
+        stm = self.bts
         asset = Asset(data, full=False, steem_instance=stm)
         self.assertEqual(asset.symbol, symbol_str)
         self.assertEqual(asset.precision, precision)
@@ -74,7 +59,7 @@ class Testcases(unittest.TestCase):
     # Mocker comes from pytest-mock, providing an easy way to have patched objects
     # for the life of the test.
     def test_calls(mocker):
-        asset = Asset("USD", lazy=True, steem_instance=Steem(offline=True))
+        asset = Asset("USD", lazy=True, steem_instance=Hive(offline=True))
         method = mocker.patch.object(Asset, 'get_call_orders')
         asset.calls
         method.assert_called_with(10)

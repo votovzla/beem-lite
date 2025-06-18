@@ -2,7 +2,7 @@
 import unittest
 from parameterized import parameterized
 from pprint import pprint
-from beem import Steem
+from beem import Hive
 from beem.discussions import (
     Query, Discussions_by_trending, Comment_discussions_by_payout,
     Post_discussions_by_payout, Discussions_by_created, Discussions_by_active,
@@ -11,8 +11,8 @@ from beem.discussions import (
     Discussions_by_comments, Discussions_by_promoted, Discussions
 )
 from datetime import datetime
-from beem.instance import set_shared_steem_instance
-from .nodes import get_hive_nodes, get_steem_nodes
+from beem.instance import set_shared_hive_instance
+from .nodes import get_hive_nodes
 
 wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 
@@ -22,7 +22,7 @@ class Testcases(unittest.TestCase):
     def setUpClass(cls):
         node_list = get_hive_nodes()
       
-        cls.bts = Steem(
+        cls.bts = Hive(
             node=node_list,
             use_condenser=False,
             nobroadcast=True,
@@ -31,7 +31,7 @@ class Testcases(unittest.TestCase):
         )
         # from getpass import getpass
         # self.bts.wallet.unlock(getpass())
-        set_shared_steem_instance(cls.bts)
+        set_shared_hive_instance(cls.bts)
         cls.bts.set_default_account("test")
 
     def test_trending(self):

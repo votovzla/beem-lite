@@ -5,7 +5,7 @@ from parameterized import parameterized
 import random
 import json
 from pprint import pprint
-from beem import Steem, exceptions
+from beem import Hive, exceptions
 from beem.amount import Amount
 from beem.memo import Memo
 from beem.version import version as beem_version
@@ -13,8 +13,8 @@ from beem.wallet import Wallet
 from beem.witness import Witness
 from beem.account import Account
 from beemgraphenebase.account import PrivateKey
-from beem.instance import set_shared_steem_instance
-from .nodes import get_hive_nodes, get_steem_nodes
+from beem.instance import set_shared_hive_instance
+from .nodes import get_hive_nodes
 from beem.hivesigner import HiveSigner
 # Py3 compatibility
 import sys
@@ -25,7 +25,7 @@ class Testcases(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.bts = Steem(
+        cls.bts = Hive(
             node=get_hive_nodes(),
             nobroadcast=True,
             unsigned=True,

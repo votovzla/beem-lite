@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from parameterized import parameterized
-from beem import Steem, Hive
+from beem import Hive
 from beem.instance import set_shared_blockchain_instance
 from beem.transactionbuilder import TransactionBuilder
 from beembase.signedtransactions import Signed_Transaction
@@ -19,7 +19,7 @@ from beemstorage.exceptions import WalletLocked
 from beemapi import exceptions
 from beem.wallet import Wallet
 from beem.utils import formatTimeFromNow
-from .nodes import get_hive_nodes, get_steem_nodes
+from .nodes import get_hive_nodes
 wif = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 wif2 = "5JKu2dFfjKAcD6aP1HqBDxMNbdwtvPS99CaxBzvMYhY94Pt6RDS"
 wif3 = "5K1daXjehgPZgUHz6kvm55ahEArBHfCHLy6ew8sT7sjDb76PU2P"
@@ -34,12 +34,6 @@ class Testcases(unittest.TestCase):
             node=node_list,
             keys={"active": wif, "owner": wif2, "memo": wif3},
             nobroadcast=True,
-            num_retries=10
-        )
-        cls.steemit = Hive(
-            node="https://api.steemit.com",
-            nobroadcast=True,
-            keys={"active": wif, "owner": wif2, "memo": wif3},
             num_retries=10
         )
         set_shared_blockchain_instance(cls.stm)

@@ -27,7 +27,7 @@ def node_answer_time(node):
 
 
 class NodeList(list):
-    """ Returns HIVE/STEEM nodes as list
+    """Returns Hive nodes as list
 
         .. code-block:: python
 
@@ -38,46 +38,6 @@ class NodeList(list):
     """
     def __init__(self):
         nodes = [
-            {
-                "url": "https://api.steemit.com",
-                "version": "0.20.2",
-                "type": "appbase",
-                "owner": "steemit",
-                "hive": False,
-                "score": 50
-            },
-            {
-                "url": "https://api.justyy.com",
-                "version": "0.20.2",
-                "type": "appbase",
-                "owner": "justyy",
-                "hive": False,
-                "score": 20
-            },
-            {
-                "url": "https://api.steemdb.online",
-                "version": "0.23.0",
-                "type": "appbase",
-                "owner": "steem_supporter",
-                "hive": False,
-                "score": 20
-            },
-            {
-                "url": "https://api.steem.buzz",
-                "version": "0.23.0",
-                "type": "appbase",
-                "owner": "ericet",
-                "hive": False,
-                "score": 20
-            },
-            {
-                "url": "https://api.steem.buzz",
-                "version": "0.23.0",
-                "type": "appbase",
-                "owner": "ericet",
-                "hive": False,
-                "score": 20
-            },
             {
                 "url": "https://anyx.io",
                 "version": "0.23.0",
@@ -124,22 +84,6 @@ class NodeList(list):
                 "type": "appbase",
                 "owner": "techcoderx",
                 "hive": True,
-                "score": 10
-            },
-            {
-                "url": "https://steem.61bts.com",
-                "version": "0.23.0",
-                "type": "appbase",
-                "owner": "ety001",
-                "hive": False,
-                "score": 10
-            },
-            {
-                "url": "https://cn.steems.top",
-                "version": "0.22.5",
-                "type": "appbase",
-                "owner": "maiyude",
-                "hive": False,
                 "score": 10
             },
             {
@@ -290,18 +234,18 @@ class NodeList(list):
             if kwargs.get("steem_instance"):
                 blockchain_instance = kwargs["steem_instance"]
             elif kwargs.get("hive_instance"):
-                blockchain_instance = kwargs["hive_instance"]        
-        steem = blockchain_instance or shared_blockchain_instance()
+                blockchain_instance = kwargs["hive_instance"]
+        chain = blockchain_instance or shared_blockchain_instance()
         metadata = None
         account = None
         cnt = 0
         while metadata is None and cnt < 5:
             cnt += 1
             try:
-                account = Account("fullnodeupdate", blockchain_instance=steem)
+                account = Account("fullnodeupdate", blockchain_instance=chain)
                 metadata = json.loads(account["json_metadata"])
             except:
-                steem.rpc.next()
+                chain.rpc.next()
                 account = None
                 metadata = None
         if metadata is None:
@@ -427,29 +371,6 @@ class NodeList(list):
 
         return [node["url"] for node in sorted(node_list, key=lambda self: self['score'], reverse=True)]
 
-    def get_steem_nodes(self, testnet=False, not_working=False, wss=True, https=True):
-        """ Returns steem only nodes as list
-
-            :param bool testnet: when True, testnet nodes are included
-            :param bool not_working: When True, all nodes including not working ones will be returned
-
-        """
-        node_list = []
-        node_type_list = []
-
-        for node in self:
-            if node["hive"]:
-                continue
-            if (node["score"] < 0 and not not_working):
-                continue
-            if (testnet and node["type"] == "testnet") or (not testnet and node["type"] != "testnet"):            
-                if not https and node["url"][:5] == 'https':
-                    continue
-                if not wss and node["url"][:3] == 'wss':
-                    continue
-                node_list.append(node)
-
-        return [node["url"] for node in sorted(node_list, key=lambda self: self['score'], reverse=True)]
 
     def get_testnet(self, testnet=True, testnetdev=False):
         """Returns testnet nodes"""
